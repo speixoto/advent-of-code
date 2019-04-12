@@ -56,19 +56,11 @@ class Guard(object):
 
     @property
     def most_sleepy_minute(self):
-        return self.minutes_sleeping.index(max(self.minutes_sleeping))
+        return self.minutes_sleeping.index(self.max_times_slept_on_same_minute)
 
-    def __lt__(self, other):
-        return self.total_minutes_sleeping < other.total_minutes_sleeping
-
-    def __le__(self, other):
-        return self.total_minutes_sleeping <= other.total_minutes_sleeping
-
-    def __gt__(self, other):
-        return self.total_minutes_sleeping > other.total_minutes_sleeping
-
-    def __ge__(self, other):
-        return self.total_minutes_sleeping >= other.total_minutes_sleeping
+    @property
+    def max_times_slept_on_same_minute(self):
+        return max(self.minutes_sleeping)
 
 
 @dataclass
@@ -84,8 +76,14 @@ class Team(object):
     @property
     def most_sleepy_guard(self):
         guards = list(self.guards.values())
-        guards.sort()
-        return guards[-1]
+        guards.sort(key=lambda x: x.total_minutes_sleeping, reverse=True)
+        return guards[0]
+
+    @property
+    def most_sleepy_guard_on_same_minute(self):
+        guards = list(self.guards.values())
+        guards.sort(key=lambda x: x.max_times_slept_on_same_minute, reverse=True)
+        return guards[0]
 
 
 def parse_record(record_string: str) -> Record:
@@ -121,4 +119,7 @@ def run():
     team = build_team_from_record_lines(input_lines)
     sleepiest_guard = team.most_sleepy_guard
     print(f'The sleepiest guard is {sleepiest_guard.id} ({sleepiest_guard.id *sleepiest_guard.most_sleepy_minute})')
+
+    sleepiest_guard = team.most_sleepy_guard_on_same_minute
+    print(f'The sleepiest guard is {sleepiest_guard.id} ({sleepiest_guard.id * sleepiest_guard.most_sleepy_minute})')
 

@@ -48,4 +48,5 @@ def test_guard_process_records():
 def test_team():
     team = build_team_from_record_lines(mock_record_lines)
     assert team.most_sleepy_guard.id == 10
+    assert team.most_sleepy_guard_on_same_minute.id == 99
 
