@@ -76,12 +76,13 @@ class Fabric(object):
         return len([square for square in self.squares.values() if square.have_more_than_one_claim()])
 
     def find_good_claim(self) -> Optional[Claim]:
-        tested_claims = []
+        tested_claims: List[Claim] = []
         for claim in self.claims:
             if claim not in tested_claims:
                 if self._is_claim_good(claim):
                     return claim
                 tested_claims.append(claim)
+        return None
 
     def _is_claim_good(self, claim: Claim) -> bool:
         num_squares_with_only_one_claim = 0
@@ -102,7 +103,8 @@ def run_part_01(input_list: list) -> Fabric:
 
 def run_part_02(fabric: Fabric) -> None:
     good_claim = fabric.find_good_claim()
-    print(f'This is the best claim: {good_claim.id}')
+    if good_claim:
+        print(f'This is the best claim: {good_claim.id}')
 
 
 def run():

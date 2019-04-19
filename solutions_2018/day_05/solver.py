@@ -1,5 +1,6 @@
 from string import ascii_lowercase
 from operator import itemgetter
+from typing import List
 
 from ..common.common import get_input
 
@@ -14,10 +15,10 @@ def units_react(unit_1: str, unit_2: str) -> bool:
 
 def polymer_reaction(polymer: str) -> str:
     """Remove all the consecutive units that react from the polymer string and return polymer after the reaction"""
-    polymer = list(polymer)[::-1]
-    result_polymer = []
-    while len(polymer) > 0:
-        unit = polymer.pop()
+    polymer_list = list(polymer)[::-1]
+    result_polymer: List[str] = []
+    while len(polymer_list) > 0:
+        unit = polymer_list.pop()
         if len(result_polymer) > 0 and units_react(unit, result_polymer[-1]):
             result_polymer.pop()
         else:
